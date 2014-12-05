@@ -1,0 +1,9 @@
+{
+  "name": "raspi/zf1-fb-auth",
+  "description": "Zend Framework 1 Facebook SDK authentication adapter",
+  "require": {
+    "php": ">=5.4",
+    "zendframework/zendframework1": "1.*",
+    "facebook/php-sdk-v4": "4.*"
+  }
+}
