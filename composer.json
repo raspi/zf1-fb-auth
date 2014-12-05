@@ -5,5 +5,9 @@
     "php": ">=5.4",
     "zendframework/zendframework1": "1.*",
     "facebook/php-sdk-v4": "4.*"
+  },
+  "autoload": {
+    "psr-0": {
+      "Zend_Auth_Adapter_Facebook\\": "src/"
   }
 }
