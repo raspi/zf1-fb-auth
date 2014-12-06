@@ -1,6 +1,9 @@
 {
   "name": "raspi/zf1-fb-auth",
   "description": "Zend Framework 1 Facebook SDK authentication adapter",
+  "type": "library",
+  "license": "NewBSD",
+  "homepage": "https://github.com/raspi/zf1-fb-auth",
   
   "require": {
     "php": ">=5.4",
