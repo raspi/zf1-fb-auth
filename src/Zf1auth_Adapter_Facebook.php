@@ -162,7 +162,7 @@ class Zf1auth_Adapter_Facebook implements Zend_Auth_Adapter_Interface
 
       if ($this->_throwExceptions)
       {
-        throw new Zend_Auth_Adapter_Facebook_Redirect_Exception(join(PHP_EOL, $errs));
+        throw new Zf1auth_Adapter_Facebook_Redirect_Exception(join(PHP_EOL, $errs));
       }
 
       return new Zend_Auth_Result(Zend_Auth_Result::FAILURE, null, $errs);
@@ -174,7 +174,7 @@ class Zf1auth_Adapter_Facebook implements Zend_Auth_Adapter_Interface
 
       if ($this->_throwExceptions)
       {
-        throw new Zend_Auth_Adapter_Exception($err);
+        throw new Zf1auth_Adapter_Exception($err);
       }
 
       return new Zend_Auth_Result(Zend_Auth_Result::FAILURE, null, array($err));
@@ -231,7 +231,7 @@ class Zf1auth_Adapter_Facebook implements Zend_Auth_Adapter_Interface
 
         if ($this->_throwExceptions)
         {
-          throw new Zend_Auth_Adapter_Facebook_Permissions_Revoke_Exception($err);
+          throw new Zf1auth_Adapter_Facebook_Permissions_Revoke_Exception($err);
         }
 
         return new Zend_Auth_Result(Zend_Auth_Result::FAILURE, null, array($err));
@@ -241,7 +241,7 @@ class Zf1auth_Adapter_Facebook implements Zend_Auth_Adapter_Interface
 
       if ($this->_throwExceptions)
       {
-        throw new Zend_Auth_Adapter_Facebook_Permissions_Exception($err);
+        throw new Zf1auth_Adapter_Facebook_Permissions_Exception($err);
       }
 
       return new Zend_Auth_Result(Zend_Auth_Result::FAILURE, null, array($err));
