@@ -132,7 +132,7 @@ class Zf1auth_Adapter_Facebook implements \Zend_Auth_Adapter_Interface
         throw $e;
       }
 
-      return new \Zend_Auth_Result(Zend_Auth_Result::FAILURE, null, array('Facebook error: ' . $e->getMessage()));
+      return new \Zend_Auth_Result(\Zend_Auth_Result::FAILURE, null, array('Facebook error: ' . $e->getMessage()));
     } catch (\Facebook\FacebookSDKException $e)
     {
       if ($this->_throwExceptions)
@@ -140,7 +140,7 @@ class Zf1auth_Adapter_Facebook implements \Zend_Auth_Adapter_Interface
         throw $e;
       }
 
-      return new \Zend_Auth_Result(Zend_Auth_Result::FAILURE, null, array('Facebook error: ' . $e->getMessage()));
+      return new \Zend_Auth_Result(\Zend_Auth_Result::FAILURE, null, array('Facebook error: ' . $e->getMessage()));
     }
 
 
@@ -167,7 +167,7 @@ class Zf1auth_Adapter_Facebook implements \Zend_Auth_Adapter_Interface
         throw new Zf1auth_Adapter_Facebook_Redirect_Exception(join(PHP_EOL, $errs));
       }
 
-      return new \Zend_Auth_Result(Zend_Auth_Result::FAILURE, null, $errs);
+      return new \Zend_Auth_Result(\Zend_Auth_Result::FAILURE, null, $errs);
     }
 
     if (!$fbses instanceof \Facebook\FacebookSession)
@@ -179,12 +179,12 @@ class Zf1auth_Adapter_Facebook implements \Zend_Auth_Adapter_Interface
         throw new Zf1auth_Adapter_Exception($err);
       }
 
-      return new \Zend_Auth_Result(Zend_Auth_Result::FAILURE, null, array($err));
+      return new \Zend_Auth_Result(\Zend_Auth_Result::FAILURE, null, array($err));
     }
 
     if (!$fbses->validate())
     {
-      return new \Zend_Auth_Result(Zend_Auth_Result::FAILURE, null, array('Invalid Facebook session'));
+      return new \Zend_Auth_Result(\Zend_Auth_Result::FAILURE, null, array('Invalid Facebook session'));
     }
 
     $request = new \Facebook\FacebookRequest($fbses, 'GET', '/me');
@@ -236,7 +236,7 @@ class Zf1auth_Adapter_Facebook implements \Zend_Auth_Adapter_Interface
           throw new Zf1auth_Adapter_Facebook_Permissions_Revoke_Exception($err);
         }
 
-        return new \Zend_Auth_Result(Zend_Auth_Result::FAILURE, null, array($err));
+        return new \Zend_Auth_Result(\Zend_Auth_Result::FAILURE, null, array($err));
       }
 
       $err = "Facebook error: User didn't grant following permissions to application: " . join(', ', $this->_missingPermissions);
@@ -246,7 +246,7 @@ class Zf1auth_Adapter_Facebook implements \Zend_Auth_Adapter_Interface
         throw new Zf1auth_Adapter_Facebook_Permissions_Exception($err);
       }
 
-      return new \Zend_Auth_Result(Zend_Auth_Result::FAILURE, null, array($err));
+      return new \Zend_Auth_Result(\Zend_Auth_Result::FAILURE, null, array($err));
     }
 
     // Construct identity
@@ -259,7 +259,7 @@ class Zf1auth_Adapter_Facebook implements \Zend_Auth_Adapter_Interface
 
     $o->_facebookSession = $fbses;
 
-    return new \Zend_Auth_Result(Zend_Auth_Result::SUCCESS, $o, array());
+    return new \Zend_Auth_Result(\Zend_Auth_Result::SUCCESS, $o, array());
   }
 
 }
