@@ -23,7 +23,7 @@
   
   "autoload": {
     "psr-4": {
-      "Zend_Auth_Adapter_Facebook\\": "src/"
+      "Zf1auth_Adapter_Facebook\\": "src/"
     }
   }
   
