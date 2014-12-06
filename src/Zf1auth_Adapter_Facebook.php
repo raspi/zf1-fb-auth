@@ -42,6 +42,14 @@ class Zf1auth_Adapter_Facebook implements \Zend_Auth_Adapter_Interface
   protected $_throwExceptions = true;
 
   /**
+   * @param bool $b 
+   */
+  public function setThrowExceptions($b = true)
+  {
+    $this->_throwExceptions = $b;
+  }
+  
+  /**
    * 
    * @param string $id
    */
@@ -129,6 +137,11 @@ class Zf1auth_Adapter_Facebook implements \Zend_Auth_Adapter_Interface
 
       if ($this->_throwExceptions)
       {
+	    if(100 === $e->getCode())
+		{
+		  throw new Zf1auth_Adapter_Facebook_Expired_Exception("Expired facebook auth request", null, $e);
+		}
+		
         throw $e;
       }
 
