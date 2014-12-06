@@ -2,7 +2,7 @@
 
 namespace Zf1auth;
 
-class Zf1auth_Adapter_Facebook implements Zend_Auth_Adapter_Interface
+class Zf1auth_Adapter_Facebook implements \Zend_Auth_Adapter_Interface
 {
 
   /**
