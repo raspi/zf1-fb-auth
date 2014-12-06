@@ -1,6 +1,7 @@
 {
   "name": "raspi/zf1-fb-auth",
   "description": "Zend Framework 1 Facebook SDK authentication adapter",
+  "version": "0.1.0",
   "keywords": [
     "zend framework 1",
     "facebook",
