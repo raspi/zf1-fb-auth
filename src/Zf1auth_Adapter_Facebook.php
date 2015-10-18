@@ -147,7 +147,16 @@ class Zf1auth_Adapter_Facebook implements \Zend_Auth_Adapter_Interface
       throw new Zf1auth_Adapter_Facebook_Exception($e->getMessage());
     } catch (Facebook\Exceptions\FacebookSDKException $e)
     {
-      throw new Zf1auth_Adapter_Facebook_Exception($e->getMessage());
+      $msg = "";
+      $msg .= 'PDH Instance: ' . get_class($helper->getPersistentDataHandler()) . PHP_EOL;
+      $msg .= 'UDH Instance: ' . get_class($helper->getUrlDetectionHandler()) . PHP_EOL;
+      $msg .= 'ErrorCode: ' . $helper->getErrorCode() . PHP_EOL;
+      $msg .= 'Error: ' . $helper->getError() . PHP_EOL;
+      $msg .= 'Error Description: ' . $helper->getErrorDescription() . PHP_EOL;
+      $msg .= 'Error Reason: ' . $helper->getErrorReason() . PHP_EOL;
+      $msg .= PHP_EOL;
+      
+      throw new Zf1auth_Adapter_Facebook_Exception($msg, 0, $e);
     }
     
     return new Zf1auth_Auth_Result(\Zend_Auth_Result::FAILURE, null, array());
