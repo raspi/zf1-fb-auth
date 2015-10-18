@@ -124,11 +124,14 @@ class Zf1auth_Adapter_Facebook implements \Zend_Auth_Adapter_Interface
     
     $curl = new Facebook\HttpClients\FacebookCurlHttpClient($client);
     
+    //$pdh = new Zf1auth_PersistentDataHandler();
+    $pdh = new FacebookSessionPersistentDataHandler(true);
+    
     $options = array(
       'app_id' => $this->_facebookId,
       'app_secret' => $this->_facebookSecret,
       'default_graph_version' => 'v2.5',
-      'persistent_data_handler' => new Zf1auth_PersistentDataHandler(),
+      'persistent_data_handler' => $pdh,
       'http_client_handler' => $curl,
     );
 
