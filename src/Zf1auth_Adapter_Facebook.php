@@ -118,13 +118,7 @@ class Zf1auth_Adapter_Facebook implements \Zend_Auth_Adapter_Interface
    */
   protected function _initFacebook()
   {
-    $client = new Facebook\HttpClients\FacebookCurl();
-    $client->init();
-    $client->setopt(CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
-    
-    $curl = new Facebook\HttpClients\FacebookCurlHttpClient($client);
-    
-    //$pdh = new Zf1auth_PersistentDataHandler();
+    $httpClient = new Facebook\HttpClients\FacebookStreamHttpClient();
     $pdh = new Facebook\PersistentData\FacebookSessionPersistentDataHandler(true);
     
     $options = array(
@@ -132,7 +126,7 @@ class Zf1auth_Adapter_Facebook implements \Zend_Auth_Adapter_Interface
       'app_secret' => $this->_facebookSecret,
       'default_graph_version' => 'v2.5',
       'persistent_data_handler' => $pdh,
-      'http_client_handler' => $curl,
+      'http_client_handler' => $httpClient,
     );
 
     return new \Facebook\Facebook($options);
