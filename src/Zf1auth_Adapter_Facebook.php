@@ -2,6 +2,8 @@
 
 namespace Zf1auth;
 
+use Facebook;
+
 /**
  * Facebook authentication adapter for Zend Framework 1
  * 
@@ -136,9 +138,9 @@ class Zf1auth_Adapter_Facebook implements \Zend_Auth_Adapter_Interface
   {
     $fb = $this->_initFacebook();
     $helper = $fb->getRedirectLoginHelper();
-    
+
     $accessToken = null;
-    
+
     try
     {
       $accessToken = $helper->getAccessToken();
@@ -155,12 +157,18 @@ class Zf1auth_Adapter_Facebook implements \Zend_Auth_Adapter_Interface
       $msg .= 'Error Description: ' . $helper->getErrorDescription() . PHP_EOL;
       $msg .= 'Error Reason: ' . $helper->getErrorReason() . PHP_EOL;
       $msg .= PHP_EOL;
-      
+
+      throw new Zf1auth_Adapter_Facebook_Exception($msg, 0, $e);
+    } catch (Exception $e)
+    {
+      $msg = "";
+      $msg .= 'Not catched!' . PHP_EOL;
+      $msg .= PHP_EOL;
+
       throw new Zf1auth_Adapter_Facebook_Exception($msg, 0, $e);
     }
-    
-    return new Zf1auth_Auth_Result(\Zend_Auth_Result::FAILURE, null, array());
 
+    return new Zf1auth_Auth_Result(\Zend_Auth_Result::FAILURE, null, array());
   }
 
 }
