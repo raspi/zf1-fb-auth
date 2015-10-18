@@ -1,4 +1,5 @@
 <?php
+
 namespace Zf1auth;
 
 use Facebook;
@@ -10,46 +11,53 @@ use Facebook;
  */
 class Zf1auth_PersistentDataHandler implements Facebook\PersistentData\PersistentDataInterface
 {
-    /**
-     * @var string Prefix to use for session variables.
-     */
-    protected $sessionPrefix = 'Zf1auth_facebook';
-    protected $_ses = null;
 
-    /**
-     * Init the session handler.
-     *
-     * @param boolean $enableSessionCheck
-     *
-     * @throws FacebookSDKException
-     */
-    public function __construct($enableSessionCheck = true)
+  const SESSION_NAMESPACE = 'Zf1auth_Facebook';
+
+  protected $_ses = null;
+
+  public function __construct($enableSessionCheck = true)
+  {
+    if (!\Zend_Session::isStarted())
     {
-       $this->_initSes();
-    }
-    
-    protected function _initSes()
-    {
-      $this->_ses = new \Zend_Session_Namespace($this->sessionPrefix, false);
+      throw new Exception("Session not started yet");
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function get($key)
+    $this->_initSes();
+
+    if (!$this->_ses instanceof Zend_Session_Abstract)
+    {
+      throw new Exception("Invalid session instance created");
+    }
+  }
+
+  protected function _initSes()
+  {
+    $ses = new \Zend_Session_Namespace(self::SESSION_NAMESPACE, true);
+    $ses->setExpirationHops(5, null, true);
+    $ses->setExpirationSeconds(60 * 60 * 24);
+    $this->_ses = $ses;
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public function get($key)
+  {
+    if (isset($this->_ses->{$key}))
     {
       return $this->_ses->{$key};
     }
+    
+    return null;
+  }
 
-    /**
-     * @inheritdoc
-     */
-    public function set($key, $value)
-    {
-      $log = \Zend_Registry::get('log');
-      
-      $log->log("Setting key '$key' to value '$value'", \Zend_Log::DEBUG);
-      
-      $this->_ses->{$key} = $value;
-    }
+  /**
+   * @inheritdoc
+   */
+  public function set($key, $value)
+  {
+    $this->_ses->{$key} = $value;
+  }
+
 }
