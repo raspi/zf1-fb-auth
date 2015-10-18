@@ -1,12 +1,14 @@
 <?php
 namespace Zf1auth;
 
+use Facebook;
+
 /**
  * Class FacebookSessionPersistentDataHandler
  *
  * @package Facebook
  */
-class Zf1auth_PersistentDataHandler implements \Facebook\PersistentData\PersistentDataInterface
+class Zf1auth_PersistentDataHandler implements Facebook\PersistentData\PersistentDataInterface
 {
     /**
      * @var string Prefix to use for session variables.
@@ -28,7 +30,7 @@ class Zf1auth_PersistentDataHandler implements \Facebook\PersistentData\Persiste
     
     protected function _initSes()
     {
-      $this->_ses = new \Zend_Session_Namespace($this->sessionPrefix, true);
+      $this->_ses = new \Zend_Session_Namespace($this->sessionPrefix, false);
     }
 
     /**
@@ -44,6 +46,10 @@ class Zf1auth_PersistentDataHandler implements \Facebook\PersistentData\Persiste
      */
     public function set($key, $value)
     {
+      $log = Zend_Registry::get('log');
+      
+      $log->log("Setting key '$key' to value '$value'", \Zend_Log::DEBUG);
+      
       $this->_ses->{$key} = $value;
     }
 }
