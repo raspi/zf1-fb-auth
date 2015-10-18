@@ -1,4 +1,7 @@
 <?php
+/**
+ * Facebook Zend Framework 1 authentication adapter
+ */
 
 namespace Zf1auth;
 
@@ -115,11 +118,17 @@ class Zf1auth_Adapter_Facebook implements \Zend_Auth_Adapter_Interface
    */
   protected function _initFacebook()
   {
+    $client = new Facebook\HttpClients\FacebookCurl();
+    $client->setopt(CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+    
+    $curl = new Facebook\HttpClients\FacebookCurlHttpClient($client);
+    
     $options = array(
       'app_id' => $this->_facebookId,
       'app_secret' => $this->_facebookSecret,
       'default_graph_version' => 'v2.5',
       'persistent_data_handler' => new Zf1auth_PersistentDataHandler(),
+      'http_client_handler' => $curl,
     );
 
     return new \Facebook\Facebook($options);
