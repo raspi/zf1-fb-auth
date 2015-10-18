@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Facebook Zend Framework 1 authentication adapter
  */
@@ -120,7 +121,7 @@ class Zf1auth_Adapter_Facebook implements \Zend_Auth_Adapter_Interface
   {
     $httpClient = new Facebook\HttpClients\FacebookStreamHttpClient();
     $pdh = new Facebook\PersistentData\FacebookSessionPersistentDataHandler(true);
-    
+
     $options = array(
       'app_id' => $this->_facebookId,
       'app_secret' => $this->_facebookSecret,
@@ -140,37 +141,36 @@ class Zf1auth_Adapter_Facebook implements \Zend_Auth_Adapter_Interface
   protected function _getOAuth2ClientDebug(Facebook\Authentication\OAuth2Client $c)
   {
     $req = $c->getLastRequest();
-    
-    if(null === $req)
+
+    if (null === $req)
     {
       return "";
     }
-    
+
     $msg = "OAuth2 Debug info:" . PHP_EOL;
     $msg .= "  URL: " . $req->getUrl() . PHP_EOL;
     $msg .= "  Method: " . $req->getMethod() . PHP_EOL;
     $msg .= "  Endpoint: " . $req->getEndpoint() . PHP_EOL;
     $msg .= PHP_EOL;
-    
+
     $msg .= "  Params:" . PHP_EOL;
     $msg .= print_r($req->getParams(), true) . PHP_EOL;
     $msg .= PHP_EOL;
-    
+
     $msg .= "  POST Params:" . PHP_EOL;
-    $msg .=  print_r($req->getPostParams(), true) . PHP_EOL;
+    $msg .= print_r($req->getPostParams(), true) . PHP_EOL;
     $msg .= PHP_EOL;
 
-    $msg .= "  Headers:" . PHP_EOL; 
+    $msg .= "  Headers:" . PHP_EOL;
     $msg .= print_r($req->getHeaders(), true) . PHP_EOL;
     $msg .= PHP_EOL;
-    
+
     $msg .= "  Body:" . PHP_EOL;
     $msg .= $req->getUrlEncodedBody()->getBody() . PHP_EOL;
     $msg .= PHP_EOL;
-    
+
     return $msg;
   }
-
 
   /**
    * @throws \Zend_Auth_Adapter_Exception If authentication cannot be performed
@@ -199,19 +199,44 @@ class Zf1auth_Adapter_Facebook implements \Zend_Auth_Adapter_Interface
       $msg .= 'Error Description: ' . $helper->getErrorDescription() . PHP_EOL;
       $msg .= 'Error Reason: ' . $helper->getErrorReason() . PHP_EOL;
       $msg .= PHP_EOL;
-      
+
       $msg .= $this->_getOAuth2ClientDebug($fb->getOAuth2Client());
       $msg .= PHP_EOL;
 
       throw new Zf1auth_Adapter_Facebook_Exception($msg, 0, $e);
-    } catch (Exception $e)
-    {
-      $msg = "";
-      $msg .= 'Not catched!' . PHP_EOL;
-      $msg .= PHP_EOL;
-
-      throw new Zf1auth_Adapter_Facebook_Exception($msg, 0, $e);
     }
+
+    if (!$accessToken instanceof Facebook\Authentication\AccessToken)
+    {
+      $errmsg = "";
+      $errmsg .= "Error #" . $helper->getErrorCode() . ": " . $helper->getError() . PHP_EOL;
+      $errmsg .= $helper->getErrorReason() . PHP_EOL;
+      $errmsg .= $helper->getErrorDescription() . PHP_EOL;
+      
+      return new Zf1auth_Auth_Result(\Zend_Auth_Result::FAILURE, null, array($errmsg));
+    }
+
+    $userNode = null;
+    
+    try
+    {
+      $fb->setDefaultAccessToken($accessToken);
+      $response = $fb->get('/me');
+      $userNode = $response->getGraphUser();
+    } catch (Facebook\Exceptions\FacebookResponseException $e)
+    {
+      throw new Zf1auth_Adapter_Facebook_Exception('Graph returned an error: ' . $e->getMessage(), 0, $e);
+    } catch (Facebook\Exceptions\FacebookSDKException $e)
+    {
+      throw new Zf1auth_Adapter_Facebook_Exception('Graph returned an error: ' . $e->getMessage(), 0, $e);
+    }
+    
+    if(!$userNode instanceof \Facebook\GraphNodes\GraphUser)
+    {
+      return new Zf1auth_Auth_Result(\Zend_Auth_Result::FAILURE, null, array());
+    }
+    
+    var_dump($userNode); die;
 
     return new Zf1auth_Auth_Result(\Zend_Auth_Result::FAILURE, null, array());
   }
