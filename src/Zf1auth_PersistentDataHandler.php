@@ -46,7 +46,7 @@ class Zf1auth_PersistentDataHandler implements Facebook\PersistentData\Persisten
      */
     public function set($key, $value)
     {
-      $log = Zend_Registry::get('log');
+      $log = \Zend_Registry::get('log');
       
       $log->log("Setting key '$key' to value '$value'", \Zend_Log::DEBUG);
       
