@@ -1,6 +1,10 @@
 # Zend Framework 1 Facebook SDK authentication adapter
 Uses official Facebook SDK API v4
 
+https://github.com/facebook/facebook-php-sdk-v4
+https://developers.facebook.com/docs/reference/php/5.0.0
+
+
 # Usage example
 
 application.ini:
