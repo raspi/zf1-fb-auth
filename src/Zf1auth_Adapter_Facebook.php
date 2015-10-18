@@ -143,6 +143,41 @@ class Zf1auth_Adapter_Facebook implements \Zend_Auth_Adapter_Interface
     return $this->_missingPermissions;
   }
 
+  protected function _getOAuth2ClientDebug(Facebook\Authentication\OAuth2Client $c)
+  {
+    $req = $c->getLastRequest();
+    
+    if(null === $req)
+    {
+      return "";
+    }
+    
+    $msg = "OAuth2 Debug info:" . PHP_EOL;
+    $msg .= "  URL: " . $req->getUrl() . PHP_EOL;
+    $msg .= "  Method: " . $req->getMethod() . PHP_EOL;
+    $msg .= "  Endpoint: " . $req->getEndpoint() . PHP_EOL;
+    $msg .= PHP_EOL;
+    
+    $msg .= "  Params:" . PHP_EOL;
+    $msg .= print_r($req->getParams(), true) . PHP_EOL;
+    $msg .= PHP_EOL;
+    
+    $msg .= "  POST Params:" . PHP_EOL;
+    $msg .=  print_r($req->getPostParams(), true) . PHP_EOL;
+    $msg .= PHP_EOL;
+
+    $msg .= "  Headers:" . PHP_EOL; 
+    $msg .= print_r($req->getHeaders(), true) . PHP_EOL;
+    $msg .= PHP_EOL;
+    
+    $msg .= "  Body:" . PHP_EOL;
+    $msg .= $req->getUrlEncodedBody()->getBody() . PHP_EOL;
+    $msg .= PHP_EOL;
+    
+    return $msg;
+  }
+
+
   /**
    * @throws \Zend_Auth_Adapter_Exception If authentication cannot be performed
    * @return \Zend_Auth_Result
@@ -171,13 +206,8 @@ class Zf1auth_Adapter_Facebook implements \Zend_Auth_Adapter_Interface
       $msg .= 'Error Reason: ' . $helper->getErrorReason() . PHP_EOL;
       $msg .= PHP_EOL;
       
-      $lr = $fb->getLastResponse();
-      $msg .= "Last response:" . PHP_EOL;
-      $msg .= \Zend_Debug::dump($lr, '', false) . PHP_EOL;
-      
-      $oac = $fb->getOAuth2Client();
-      $msg .= "Oauth Client:" . PHP_EOL;
-      $msg .= \Zend_Debug::dump($oac, '', false) . PHP_EOL;
+      $msg .= $this->_getOAuth2ClientDebug($fb->getOAuth2Client());
+      $msg .= PHP_EOL;
 
       throw new Zf1auth_Adapter_Facebook_Exception($msg, 0, $e);
     } catch (Exception $e)
