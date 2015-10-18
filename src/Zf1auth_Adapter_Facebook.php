@@ -119,6 +119,7 @@ class Zf1auth_Adapter_Facebook implements \Zend_Auth_Adapter_Interface
   protected function _initFacebook()
   {
     $client = new Facebook\HttpClients\FacebookCurl();
+    $client->init();
     $client->setopt(CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
     
     $curl = new Facebook\HttpClients\FacebookCurlHttpClient($client);
