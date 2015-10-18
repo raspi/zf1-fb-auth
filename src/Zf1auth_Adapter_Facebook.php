@@ -119,7 +119,7 @@ class Zf1auth_Adapter_Facebook implements \Zend_Auth_Adapter_Interface
       'default_graph_version' => 'v2.5',
     );
 
-    return new Facebook\Facebook($options);
+    return new \Facebook\Facebook($options);
   }
 
   public function getMissingPermissions()
