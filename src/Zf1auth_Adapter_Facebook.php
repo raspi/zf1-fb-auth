@@ -117,7 +117,7 @@ class Zf1auth_Adapter_Facebook implements \Zend_Auth_Adapter_Interface
       'app_id' => $this->_facebookId,
       'app_secret' => $this->_facebookSecret,
       'default_graph_version' => 'v2.5',
-      'persistent_data_handler' => 'memory',
+      'persistent_data_handler' => new Zf1auth_PersistentDataHandler(),
     );
 
     return new \Facebook\Facebook($options);
