@@ -141,8 +141,8 @@ class Zf1auth_Adapter_Facebook implements \Zend_Auth_Adapter_Interface
   }
 
   /**
-   * @throws Zend_Auth_Adapter_Exception If authentication cannot be performed
-   * @return Zend_Auth_Result
+   * @throws \Zend_Auth_Adapter_Exception If authentication cannot be performed
+   * @return \Zend_Auth_Result
    */
   public function authenticate()
   {

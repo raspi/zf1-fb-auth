@@ -12,7 +12,7 @@ use Facebook;
 class Zf1auth_PersistentDataHandler implements Facebook\PersistentData\PersistentDataInterface
 {
 
-  const SESSION_NAMESPACE = 'Zf1auth_Facebook';
+  const SESSION_NAMESPACE = 'Zf1auth_FacebookPersistentData';
 
   /**
    * Session namespace
@@ -68,7 +68,10 @@ class Zf1auth_PersistentDataHandler implements Facebook\PersistentData\Persisten
    */
   public function set($key, $value)
   {
-    $this->_ses->{$key} = $value;
+    if (!isset($this->_ses->{$key}))
+    {
+      $this->_ses->{$key} = $value;
+    }
   }
 
 }
