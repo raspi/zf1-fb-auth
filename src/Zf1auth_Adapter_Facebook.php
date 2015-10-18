@@ -213,7 +213,7 @@ class Zf1auth_Adapter_Facebook implements \Zend_Auth_Adapter_Interface
       $errmsg .= $helper->getErrorReason() . PHP_EOL;
       $errmsg .= $helper->getErrorDescription() . PHP_EOL;
       
-      return new Zf1auth_Auth_Result(\Zend_Auth_Result::FAILURE, null, array($errmsg));
+      return new Zf1auth_Auth_Result(\Zend_Auth_Result::FAILURE_CREDENTIAL_INVALID, null, array($errmsg));
     }
 
     $userNode = null;
@@ -236,9 +236,15 @@ class Zf1auth_Adapter_Facebook implements \Zend_Auth_Adapter_Interface
       return new Zf1auth_Auth_Result(\Zend_Auth_Result::FAILURE, null, array());
     }
     
-    var_dump($userNode); die;
+    $u = new \stdClass();
+    $u->fbid = $userNode->getId();
+    $u->email = strtolower($userNode->getEmail());
+    $u->firstname = $userNode->getFirstName();
+    $u->lastname = $userNode->getLastName();
+    $u->birthday = $userNode->getBirthday();
+    $u->gender = $userNode->getGender();
 
-    return new Zf1auth_Auth_Result(\Zend_Auth_Result::FAILURE, null, array());
+    return new Zf1auth_Auth_Result(\Zend_Auth_Result::SUCCESS, $u, array());
   }
 
 }
