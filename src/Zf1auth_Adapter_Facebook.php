@@ -248,7 +248,7 @@ class Zf1auth_Adapter_Facebook implements \Zend_Auth_Adapter_Interface
     {
       if(empty($val))
       {
-        return new Zf1auth_Auth_Result(\Zend_Auth_Result::FAILURE, null, array());
+        return new Zf1auth_Auth_Result(\Zend_Auth_Result::FAILURE, null, array('Missing values'));
       }
     }
 
