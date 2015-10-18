@@ -14,23 +14,34 @@ class Zf1auth_PersistentDataHandler implements Facebook\PersistentData\Persisten
 
   const SESSION_NAMESPACE = 'Zf1auth_Facebook';
 
+  /**
+   * Session namespace
+   * 
+   * @var \Zend_Session_Abstract
+   */
   protected $_ses = null;
 
   public function __construct($enableSessionCheck = true)
   {
     if (!\Zend_Session::isStarted())
     {
-      throw new Exception("Session not started yet");
+      throw new \Exception("Session not started yet");
     }
 
-    $this->_initSes();
-
-    if (!$this->_ses instanceof Zend_Session_Abstract)
+    if(null === $this->_ses)
     {
-      throw new Exception("Invalid session instance created");
+      $this->_initSes();
+    }
+
+    if (!$this->_ses instanceof \Zend_Session_Abstract)
+    {
+      throw new \Exception("Invalid session instance created");
     }
   }
 
+  /**
+   * Initialize session
+   */
   protected function _initSes()
   {
     $ses = new \Zend_Session_Namespace(self::SESSION_NAMESPACE, true);
